@@ -1,0 +1,7 @@
+streamlit
+pandas
+numpy
+matplotlib
+scipy
+pystan==2.19.1.1
+prophet==1.1.5
