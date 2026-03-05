@@ -1,5 +1,30 @@
 #시각화 대시보드 streamlit 배포 버전 코드
-0].set_xlabel("Year")
+import streamlit as st
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import gaussian_kde
+
+@st.cache_data
+def load_data(file_path):
+    df = pd.read_csv(file_path)
+    if 'YEAR' in df.columns:
+        # 소수점 제거 후 정수로 변환
+        df['YEAR_INT'] = df['YEAR'].astype(int)
+        df['DATE'] = pd.to_datetime(df['YEAR_INT'].astype(str), format='%Y')
+        df.set_index('DATE', inplace=True)
+    return df
+
+def plot_advanced_sunspot_visualizations(df, sunactivity_col='SUNACTIVITY',
+                                        hist_bins=30, trend_degree=1,
+                                        point_size=10, point_alpha=0.5):
+    fig, axs = plt.subplots(2, 2, figsize=(15, 12))
+    fig.suptitle("Sunspots Data Advanced Visualization", fontsize=18)
+
+    # (a) 전체 시계열 라인 차트
+    axs[0, 0].plot(df.index, df[sunactivity_col], color='blue')
+    axs[0, 0].set_title("Sunspot Activity Over Time")
+    axs[0, 0].set_xlabel("Year")
     axs[0, 0].set_ylabel("Sunspot Count")
     axs[0, 0].grid(True)
 
